@@ -6,6 +6,7 @@ body {
 .top15div {
     position: absolute;
     height: 660px;
+    width: 640px;
     overflow: hidden;
 }
 
@@ -15,6 +16,7 @@ body {
     width: 100%;
     text-align: center;
     background-color: #FD00DB;
+    border: none;
 }
 
 #frame {

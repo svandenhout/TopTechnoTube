@@ -98,7 +98,7 @@ for($i = 0; $i < count($top15); $i++) {
 }
 
 echo 
-"<div id='reveal-player-button' onclick='popupVideo()' >GET PLAYLIST</div>";
+"<button id='reveal-player-button' onclick='popupVideo()' >GET PLAYLIST</button>";
 
 echo
 "<iframe 
