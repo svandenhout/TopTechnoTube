@@ -67,6 +67,11 @@ for($i = 0; $i < count($fields) - 1; $i++) {
     }
 }
 
+echo "<head>";
+echo "<link href='stylesheets/style.css' type='text/css' rel='stylesheet' id='stylesheet'/>";
+echo "<script src='http://code.jquery.com/jquery-1.9.0.min.js'></script>";
+echo "<script src='js/functionality.js'></script>";
+echo "</head>";
 echo "<body>";
 echo "<div class='top15div'>";
 $url = "";
@@ -103,7 +108,6 @@ echo
 echo
 "<iframe 
     id='frame'
-    class='hidden'
     width='640'
     height='480'
     src=" . $url . "
@@ -115,8 +119,3 @@ echo "</div>";
 ?>
 
 </body>
-<footer>
-    <link href="stylesheets/style.css" type="text/css" rel="stylesheet" id="stylesheet"/>
-    <script src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
-    <script src="js/functionality.js"></script>
-</footer>
