@@ -97,20 +97,26 @@ for($i = 0; $i < count($top15); $i++) {
         }
 }
 
-echo "</div>";
+echo 
+"<div id='reveal-player-button'>GET PLAYLIST</div>";
 
 echo
-"<iframe
+"<iframe 
     id='frame'
+    class='hidden'
     width='640'
     height='480'
     src=" . $url . "
     frameborder='0'
     allowfullscreen>
 </iframe>";
+
+echo "</div>";
 ?>
 
 </body>
 <footer>
     <link href="stylesheets/style.css" type="text/css" rel="stylesheet" id="stylesheet"/>
+    <script src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
+    <script src="js/functionality.js"></script>
 </footer>

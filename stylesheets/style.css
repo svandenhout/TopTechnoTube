@@ -2,3 +2,22 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.top15div {
+    position: absolute;
+    height: 700px;
+    overflow: hidden;
+}
+
+
+
+#reveal-player-button {
+    width: 100%;
+    text-align: center;
+    background-color: #FD00DB;
+}
+
+#frame {
+    position: relative;
+    margin-top: 100px;
+}
