@@ -55,17 +55,53 @@ for($i = 0; $i < count($fields) - 1; $i++) {
     }
 }
 
-// print_r($top15);
+echo "<body>";
+echo "<div class='top15div'>";
+$url = "";
+$strIndex = 0;
+$videoIdLength = 11;
 
 for($i = 0; $i < count($top15); $i++) {
-    echo $top15[$i]['name'] . "</br>";
-    /*"<iframe    
-        width='560' 
-        height='315' 
-        src=" . $top15[$i]['name'] . "
-        frameborder='0' 
-        allowfullscreen>
-    </iframe></br>";*/
+    $rank = $i + 1;
+    
+    echo "<h4>" . $rank . ": " . $top15[$i]['name'] . "</h4>";
+
+    if(strpbrk($top15[$i]['source'], "youtube") !== false) {
+
+
+        // makes the beginning of the youtube url string
+        // also adds the playlist attrebute
+        // see https://developers.google.com/youtube/player_parameters#playlist
+        if($i < 1) {
+            $strIndex = strrpos($top15[$i]['source'], "?") + 1;
+            $url = substr($top15[$i]['source'], 0, $strIndex);
+            $url = $url . "playlist=";
+            //echo $url . "</br>";
+        }else {
+            $strIndex = strrpos($top15[$i]['source'], "/") + 1;
+            $url = $url . substr(
+                            $top15[$i]['source'], 
+                            $strIndex, 
+                            $videoIdLength
+                          ) . ",";
+        }
+    }
 }
 
+echo  "</div>";
+
+echo
+"<iframe   
+    id='frame'
+    width='800'
+    height='600'
+    src=" . $url . "
+    frameborder='0' 
+    allowfullscreen>
+</iframe>";
 ?>
+
+</body>
+<footer>
+    <link href="stylesheets/style.css" type="text/css" rel="stylesheet" id="stylesheet"/>
+</footer>
