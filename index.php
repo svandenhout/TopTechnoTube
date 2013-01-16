@@ -10,8 +10,17 @@ $app_token_url = "https://graph.facebook.com/oauth/access_token?"
     $params = null;
 parse_str($response, $params);
 
-$graph_url = "https://graph.facebook.com/316380181796546/feed?access_token=" 
+$graph_url = "https://graph.facebook.com/" . $group_id . "/feed?access_token="
     . $params['access_token'];
+
+/*
+ * FQL!!!!!
+$fql_query_url = 'https://graph.facebook.com/'
+    . '/fql?q=SELECT+uid2+FROM+group+WHERE+uid1'
+    . '&access_token=' . $access_token;
+$fql_query_result = file_get_contents($fql_query_url);
+$fql_query_obj = json_decode($fql_query_result, true);
+*/
 
 
 // alle zooi ophalen uit de groep
@@ -31,11 +40,14 @@ $top15 = array();
 
 // fill the $allPosts array with all posts
 // TODO: dit is echt heel lelijk
+
 for($i = 0; $i < count($fields) - 1; $i++) {
     for($j = 0; $j < count($fields[$i]['data']); $j++) {
+        $youtubeCheck = strstr($fields[$i]['data'][$j]['source'], "youtube");
         if(
             $fields[$i]['data'][$j]['likes'] !== 'undefined' &&
-            $fields[$i]['data'][$j]['type'] === 'video'
+            $fields[$i]['data'][$j]['type'] === 'video' &&
+            $youtubeCheck !== false
         ) {
             if(count($top15) < 15) {
                 array_push($top15, $fields[$i]['data'][$j]);
@@ -66,9 +78,6 @@ for($i = 0; $i < count($top15); $i++) {
     
     
     echo "<h4>" . $rank . ": " . $top15[$i]['name'] . "</h4>";
-
-    if(strstr($top15[$i]['source'], "youtube") !== false) {
-
         // makes the beginning of the youtube url string
         // also adds the playlist attrebute
         // see https://developers.google.com/youtube/player_parameters#playlist
@@ -86,10 +95,8 @@ for($i = 0; $i < count($top15); $i++) {
                             $videoIdLength
                           ) . ",";
         }
-    }
 }
 
-echo $url;
 echo "</div>";
 
 echo
