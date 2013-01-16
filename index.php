@@ -64,10 +64,10 @@ $videoIdLength = 11;
 for($i = 0; $i < count($top15); $i++) {
     $rank = $i + 1;
     
+    
     echo "<h4>" . $rank . ": " . $top15[$i]['name'] . "</h4>";
 
-    if(strpbrk($top15[$i]['source'], "youtube") !== false) {
-
+    if(strstr($top15[$i]['source'], "youtube") !== false) {
 
         // makes the beginning of the youtube url string
         // also adds the playlist attrebute
@@ -76,7 +76,6 @@ for($i = 0; $i < count($top15); $i++) {
             $strIndex = strrpos($top15[$i]['source'], "?") + 1;
             $url = substr($top15[$i]['source'], 0, $strIndex);
             $url = $url . "playlist=";
-            //echo $url . "</br>";
         }else {
             $strIndex = strrpos($top15[$i]['source'], "/") + 1;
             $url = $url . substr(
