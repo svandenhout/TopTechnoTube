@@ -73,9 +73,11 @@ for($i = 0; $i < count($top15); $i++) {
         // also adds the playlist attrebute
         // see https://developers.google.com/youtube/player_parameters#playlist
         if($i < 1) {
-            $strIndex = strrpos($top15[$i]['source'], "?") + 1;
-            $url = substr($top15[$i]['source'], 0, $strIndex);
-            $url = $url . "playlist=";
+            
+            $url = "http://www.youtube.com/embed/";
+            $strIndex = strrpos($top15[$i]['source'], "/") + 1;
+            $url = $url. substr($top15[$i]['source'], $strIndex, $videoIdLength);
+            $url = $url . "?listType=playlist&playlist=";
         }else {
             $strIndex = strrpos($top15[$i]['source'], "/") + 1;
             $url = $url . substr(
@@ -87,15 +89,16 @@ for($i = 0; $i < count($top15); $i++) {
     }
 }
 
-echo  "</div>";
+echo $url;
+echo "</div>";
 
 echo
-"<iframe   
+"<iframe
     id='frame'
-    width='800'
-    height='600'
+    width='640'
+    height='480'
     src=" . $url . "
-    frameborder='0' 
+    frameborder='0'
     allowfullscreen>
 </iframe>";
 ?>
