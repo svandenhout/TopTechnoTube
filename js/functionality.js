@@ -1,5 +1,6 @@
 var clicked = false;
-$("#reveal-player-button").click(function() {
+
+function popupVideo() {
     if(clicked === false){
         clicked = true;
         $("#frame").animate({
@@ -11,4 +12,4 @@ $("#reveal-player-button").click(function() {
             top: '+=600'
         });
     }
-})
+}
