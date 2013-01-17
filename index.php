@@ -40,8 +40,6 @@ for($i = 0; $i < count($fql_query_obj['data']); $i++) {
     $post['likes'] = $likes;
     $post['name'] = $name;
     
-    
-    
     $youtubeCheck = strstr(
         $source,
         "youtube"
@@ -105,7 +103,7 @@ for($i = count($top15); $i > 0; $i--) {
 }
 
 echo 
-"<button id='reveal-player-button' onclick='popupVideo()' >GET PLAYLIST</button>";
+"<button id='reveal-player-button' onclick='popupVideo()' >SHOW PLAYLIST</button>";
 
 echo
 "<iframe 
@@ -124,6 +122,7 @@ echo "</div>";
 </body>
 <footer>
     <link href="stylesheets/style.css" type="text/css" rel="stylesheet" id="stylesheet"/>
+    <link href='http://fonts.googleapis.com/css?family=Monda' rel='stylesheet' type='text/css'>
     <script src="js/jquery-1.9.0.min.js"></script>
     <script src="js/functionality.js"></script>
 </footer>
