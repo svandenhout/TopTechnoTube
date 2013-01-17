@@ -10,61 +10,61 @@ $app_token_url = "https://graph.facebook.com/oauth/access_token?"
     $params = null;
 parse_str($response, $params);
 
-$graph_url = "https://graph.facebook.com/" . $group_id . "/feed?access_token="
-    . $params['access_token'];
+$last_week = '1356933600';
 
 /*
  * FQL!!!!!
+ */ 
+ // wat de fuck "+AND+created_time> " . $last_week .
 $fql_query_url = 'https://graph.facebook.com/'
-    . '/fql?q=SELECT+uid2+FROM+group+WHERE+uid1'
-    . '&access_token=' . $access_token;
+    . 'fql?q=SELECT+attachment,+likes,+created_time+FROM+stream+WHERE+source_id='
+    . $group_id . "+LIMIT+200"
+    . '&access_token=' . $params[access_token];
 $fql_query_result = file_get_contents($fql_query_url);
 $fql_query_obj = json_decode($fql_query_result, true);
-*/
 
-
-// alle zooi ophalen uit de groep
-$fields = array();
-
-$content = json_decode(file_get_contents($graph_url), true);
-array_push($fields, $content);
-
-// will allways return an empty last array
-while($content['paging']['next']) {
-    $content = json_decode(file_get_contents($content['paging']['next']), true);
-    array_push($fields ,$content);
-}
-
-$allPosts = array();
 $top15 = array();
 
-// fill the $allPosts array with all posts
-// TODO: dit is echt heel lelijk
-
-for($i = 0; $i < count($fields) - 1; $i++) {
-    for($j = 0; $j < count($fields[$i]['data']); $j++) {
-        $youtubeCheck = strstr($fields[$i]['data'][$j]['source'], "youtube");
-        if(
-            $fields[$i]['data'][$j]['likes'] !== 'undefined' &&
-            $fields[$i]['data'][$j]['type'] === 'video' &&
-            $youtubeCheck !== false
-        ) {
-            if(count($top15) < 15) {
-                array_push($top15, $fields[$i]['data'][$j]);
-            }else {
-                // compare new value to arrays
-                for($k = 0; $k < count($top15); $k++) {
-                    if( 
-                        $top15[$k]['likes']['count'] < 
-                        $fields[$i]['data'][$j]['likes']['count']
-                    ) {
-                        $top15[$k] = $fields[$i]['data'][$j];
-                        break;
-                    }
+for($i = 0; $i < count($fql_query_obj['data']); $i++) {
+    $source = 
+        $fql_query_obj
+            ['data'][$i]['attachment']['media'][0]['video']['source_url'];
+    
+    $likes = $fql_query_obj['data'][$i]['likes']['count'];
+    
+    $name = $fql_query_obj['data'][$i]['attachment']['media'][0]['alt'];
+    
+    $post = array();
+    
+    $post['source'] = $source;
+    $post['likes'] = $likes;
+    $post['name'] = $name;
+    
+    $youtubeCheck = strstr(
+        $source,
+        "youtube"
+    );
+    
+    if(
+        $likes !== 'undefined' &&
+        $youtubeCheck !== false
+    ) {
+        if(count($top15) < 15) {
+            array_push($top15, $post);
+        }else {
+            // compare new value to arrays
+            for($j = 0; $j < count($top15); $j++) {
+                if( 
+                    $top15[$j]['post']['likes'] < 
+                    $post['likes']
+                ) {
+                    $top15[$j] = $post;
+                    break;
                 }
             }
         }
     }
+    
 }
 
 echo "<body>";
@@ -73,28 +73,29 @@ $url = "";
 $strIndex = 0;
 $videoIdLength = 11;
 
-for($i = 0; $i < count($top15); $i++) {
-    $rank = $i + 1;
+for($i = count($top15); $i > 0; $i--) {
+    $arrayIndex = $i - 1;
     
+    echo "<h4>" . $i . ": " . $top15[$arrayIndex]['name'] . "</h4>";
     
-    echo "<h4>" . $rank . ": " . $top15[$i]['name'] . "</h4>";
-        // makes the beginning of the youtube url string
-        // also adds the playlist attrebute
-        // see https://developers.google.com/youtube/player_parameters#playlist
-        if($i < 1) {
+    // makes the beginning of the youtube url string
+    // also adds the playlist attrebute
+    // see https://developers.google.com/youtube/player_parameters#playlist
+    if($i > 14) {
+        $url = "http://www.youtube.com/embed/";
+        $strIndex = strrpos($top15[$arrayIndex]['source'], "/") + 1;
+        $url = 
+            $url. substr($top15[$arrayIndex]['source'], $strIndex, $videoIdLength);
             
-            $url = "http://www.youtube.com/embed/";
-            $strIndex = strrpos($top15[$i]['source'], "/") + 1;
-            $url = $url. substr($top15[$i]['source'], $strIndex, $videoIdLength);
-            $url = $url . "?listType=playlist&playlist=";
-        }else {
-            $strIndex = strrpos($top15[$i]['source'], "/") + 1;
-            $url = $url . substr(
-                            $top15[$i]['source'], 
-                            $strIndex, 
-                            $videoIdLength
-                          ) . ",";
-        }
+        $url = $url . "?listType=playlist&playlist=";
+    }else {
+        $strIndex = strrpos($top15[$arrayIndex]['source'], "/") + 1;
+        $url = $url . substr(
+                        $top15[$arrayIndex]['source'], 
+                        $strIndex, 
+                        $videoIdLength
+                      ) . ",";
+    }
 }
 
 echo 
@@ -111,6 +112,7 @@ echo
 </iframe>";
 
 echo "</div>";
+
 ?>
 
 </body>
