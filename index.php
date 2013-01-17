@@ -10,15 +10,14 @@ $app_token_url = "https://graph.facebook.com/oauth/access_token?"
     $params = null;
 parse_str($response, $params);
 
-$last_week = '1356933600';
+$last_week = time() - (7 * 24 * 60 * 60);
 
 /*
  * FQL!!!!!
  */ 
- // wat de fuck "+AND+created_time> " . $last_week .
 $fql_query_url = 'https://graph.facebook.com/'
    . 'fql?q=SELECT+attachment,+likes,+created_time+FROM+stream+WHERE+source_id='
-   . $group_id . "+LIMIT+200"
+   . $group_id . "+AND+created_time>" . $last_week . "+LIMIT+200"
    . '&access_token=' . $params[access_token];
 $fql_query_result = file_get_contents($fql_query_url);
 $fql_query_obj = json_decode($fql_query_result, true);
