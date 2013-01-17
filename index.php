@@ -17,9 +17,9 @@ $last_week = '1356933600';
  */ 
  // wat de fuck "+AND+created_time> " . $last_week .
 $fql_query_url = 'https://graph.facebook.com/'
-    . 'fql?q=SELECT+attachment,+likes,+created_time+FROM+stream+WHERE+source_id='
-    . $group_id . "+LIMIT+200"
-    . '&access_token=' . $params[access_token];
+   . 'fql?q=SELECT+attachment,+likes,+created_time+FROM+stream+WHERE+source_id='
+   . $group_id . "+LIMIT+200"
+   . '&access_token=' . $params[access_token];
 $fql_query_result = file_get_contents($fql_query_url);
 $fql_query_obj = json_decode($fql_query_result, true);
 
@@ -40,6 +40,8 @@ for($i = 0; $i < count($fql_query_obj['data']); $i++) {
     $post['likes'] = $likes;
     $post['name'] = $name;
     
+    
+    
     $youtubeCheck = strstr(
         $source,
         "youtube"
@@ -55,7 +57,7 @@ for($i = 0; $i < count($fql_query_obj['data']); $i++) {
             // compare new value to arrays
             for($j = 0; $j < count($top15); $j++) {
                 if( 
-                    $top15[$j]['post']['likes'] < 
+                    $top15[$j]['likes'] < 
                     $post['likes']
                 ) {
                     $top15[$j] = $post;
@@ -84,8 +86,12 @@ for($i = count($top15); $i > 0; $i--) {
     if($i > 14) {
         $url = "http://www.youtube.com/embed/";
         $strIndex = strrpos($top15[$arrayIndex]['source'], "/") + 1;
-        $url = 
-            $url. substr($top15[$arrayIndex]['source'], $strIndex, $videoIdLength);
+        
+        $url = $url. substr(
+            $top15[$arrayIndex]['source'], 
+            $strIndex, 
+            $videoIdLength
+        );
             
         $url = $url . "?listType=playlist&playlist=";
     }else {
