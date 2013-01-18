@@ -21,7 +21,7 @@ body {
     border-bottom-width: thin;
     border-color: #333333;
     height: 30px;
-    width: 760px;
+    width: 740px;
     padding-top: 10px;
 }
 
@@ -47,5 +47,5 @@ body {
 #frame {
     position: relative;
     margin-top: 160px;
-    margin-left: 60px;
+    margin-left: 50px;
 }
