@@ -6,12 +6,14 @@ function popupVideo() {
         $("#frame").animate({
             top: '-=660'
         });
-        document.getElementById("reveal-player-button").innerHTML = "HIDE PLAYLIST";
+        document.getElementById("reveal-player-button").innerHTML = 
+            "<h4>HIDE PLAYLIST</h4>";
     }else {
         clicked = false;
         $("#frame").animate({
             top: '+=660'
         });
-        document.getElementById("reveal-player-button").innerHTML = "SHOW PLAYLIST";
+        document.getElementById("reveal-player-button").innerHTML = 
+            "<h4>SHOW PLAYLIST</h4>";
     }
 }

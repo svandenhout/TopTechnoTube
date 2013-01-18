@@ -6,26 +6,46 @@ body {
 
 .top15div {
     position: absolute;
-    height: 660px;
-    width: 640px;
+    height: 680px;
+    width: 760px;
     overflow: hidden;
 }
 
 .top15div h4 {
-    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
+
+.top15div .track-block {
     border-bottom: solid;
-    border-color:#DDDDDD;
+    border-bottom-width: thin;
+    border-color: #333333;
+    height: 30px;
+    width: 760px;
+    padding-top: 10px;
+}
+
+.top15div .track-names {
+    font-size: 12px;
+    float: left;
+}
+
+.top15div .names {
+    font-size: 13px;
+    float: right;
 }
 
 #reveal-player-button {
     height: 20px;
     width: 100%;
+    color: #FFFFFF;
     text-align: center;
     border: none;
-    background-color: #DDDDDD;
+    background-color: #333333;
 }
 
 #frame {
     position: relative;
     margin-top: 160px;
+    margin-left: 60px;
 }
