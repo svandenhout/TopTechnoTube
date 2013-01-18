@@ -82,21 +82,23 @@ for($i = count($top15); $i > 0; $i--) {
     $arrayIndex = $i - 1;
 
     $uid = number_format($top15[$arrayIndex]['user'], 0, '.', '');
-           
-    $fql_query_url = "https://graph.facebook.com/fql?q=SELECT+"
-        . "first_name,+last_name+FROM+user+WHERE+uid=" . $uid
-        . "&access_token=" . $params[access_token];
-    $fql_query_result = file_get_contents($fql_query_url);
-    $fql_query_obj = json_decode($fql_query_result, true);
-    
-    $userName = 
-        $fql_query_obj['data'][0]['first_name'] . " " .
-        $fql_query_obj['data'][0]['last_name'];
+    /*
+     * user names are commented 
+     */       
+    // $fql_query_url = "https://graph.facebook.com/fql?q=SELECT+"
+        // . "first_name,+last_name+FROM+user+WHERE+uid=" . $uid
+        // . "&access_token=" . $params[access_token];
+    // $fql_query_result = file_get_contents($fql_query_url);
+    // $fql_query_obj = json_decode($fql_query_result, true);
+//     
+    // $userName = 
+        // $fql_query_obj['data'][0]['first_name'] . " " .
+        // $fql_query_obj['data'][0]['last_name'];
     
     echo "<div class='track-block'>";
     echo "<h4 class='track-names'>" 
         . $i . ": " . $top15[$arrayIndex]['name'] . "</h4>";
-    echo "<h4 class='names'>" . $userName . "</h4>";
+    // echo "<h4 class='names'>" . $userName . "</h4>";
     echo "</div>";
     
     // makes the beginning of the youtube url string
