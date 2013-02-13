@@ -77,12 +77,15 @@ echo "<div class='top15div'>";
 $url = "";
 $strIndex = 0;
 $videoIdLength = 11;
+$urlFlag = true;
 
 for($i = count($top15); $i > 0; $i--) {
     $arrayIndex = $i - 1;
 
     $uid = number_format($top15[$arrayIndex]['user'], 0, '.', '');
-    /*
+    
+     
+     /*
      * user names are commented 
      */       
     // $fql_query_url = "https://graph.facebook.com/fql?q=SELECT+"
@@ -104,11 +107,12 @@ for($i = count($top15); $i > 0; $i--) {
     // makes the beginning of the youtube url string
     // also adds the playlist attrebute
     // see https://developers.google.com/youtube/player_parameters#playlist
-    if($i > 14) {
+    if($urlFlag) {
+        $urlFlag = false;
         $url = "http://www.youtube.com/embed/";
         $strIndex = strrpos($top15[$arrayIndex]['source'], "/") + 1;
         
-        $url = $url. substr(
+        $url = $url.substr(
             $top15[$arrayIndex]['source'],
             $strIndex, 
             $videoIdLength
