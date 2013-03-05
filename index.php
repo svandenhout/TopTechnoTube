@@ -10,7 +10,8 @@ $app_token_url = "https://graph.facebook.com/oauth/access_token?"
     $params = null;
 parse_str($response, $params);
 
-$last_week = time() - (7 * 24 * 60 * 60);
+// current time - 2 weeks 
+$last_week = time() - (7 * 24 * 60 * 60 * 2);
 
 /*
  * FQL!!!!!
@@ -50,26 +51,19 @@ for($i = 0; $i < count($fql_query_obj['data']); $i++) {
         "youtube"
     );
     
-    if(
-        $likes !== 'undefined' &&
-        $youtubeCheck !== false
-    ) {
+    if($youtubeCheck !== false) {
         if(count($top15) < 15) {
             array_push($top15, $post);
         }else {
             // compare new value to arrays
             for($j = 0; $j < count($top15); $j++) {
-                if( 
-                    $top15[$j]['likes'] < 
-                    $post['likes']
-                ) {
+                if($top15[$j]['likes'] < $post['likes']) {
                     $top15[$j] = $post;
                     break;
                 }
             }
         }
     }
-    
 }
 
 echo "<body>";
@@ -86,7 +80,7 @@ for($i = count($top15); $i > 0; $i--) {
     
      
      /*
-     * user names are commented 
+     * user names are commented
      */       
     // $fql_query_url = "https://graph.facebook.com/fql?q=SELECT+"
         // . "first_name,+last_name+FROM+user+WHERE+uid=" . $uid
@@ -131,7 +125,7 @@ for($i = count($top15); $i > 0; $i--) {
 
 echo 
 "<button 
-    id='reveal-player-button' 
+    id='reveal-player-button'
     onclick='popupVideo()'>
     <h4>SHOW PLAYLIST</h4>
 </button>";
