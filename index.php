@@ -25,10 +25,6 @@ $fql_query_url =
 $fql_query_result = file_get_contents($fql_query_url);
 $fql_query_obj = json_decode($fql_query_result, true);
 
-// echo '<pre>';
-// print_r($fql_query_obj);
-// echo '</pre>';
-
 $top15 = array();
 
 for($i = 0; $i < count($fql_query_obj['data']); $i++) {
@@ -51,6 +47,7 @@ for($i = 0; $i < count($fql_query_obj['data']); $i++) {
         "youtube"
     );
     
+    // make sure the top 15 is in one array
     if($youtubeCheck !== false) {
         if(count($top15) < 15) {
             array_push($top15, $post);
@@ -61,11 +58,27 @@ for($i = 0; $i < count($fql_query_obj['data']); $i++) {
                     $top15[$j] = $post;
                     break;
                 }
+                
             }
         }
     }
 }
 
+// sort the top 15
+foreach($top15 as $song){ 
+    foreach($song as $key=>$value){ 
+        if(!isset($sortArray[$key])){ 
+            $sortArray[$key] = array(); 
+        } 
+        $sortArray[$key][] = $value; 
+    } 
+}
+
+$orderby = "likes";
+
+array_multisort($sortArray[$orderby],SORT_DESC,$top15); 
+
+// echo the page 
 echo "<body>";
 echo "<div class='top15div'>";
 $url = "";
@@ -73,10 +86,10 @@ $strIndex = 0;
 $videoIdLength = 11;
 $urlFlag = true;
 
-for($i = count($top15); $i > 0; $i--) {
-    $arrayIndex = $i - 1;
+for($i = 0; $i < count($top15); $i++) {
+    $index = $i + 1;
 
-    $uid = number_format($top15[$arrayIndex]['user'], 0, '.', '');
+    $uid = number_format($top15[$i]['user'], 0, '.', '');
     
      
      /*
@@ -87,14 +100,14 @@ for($i = count($top15); $i > 0; $i--) {
         // . "&access_token=" . $params[access_token];
     // $fql_query_result = file_get_contents($fql_query_url);
     // $fql_query_obj = json_decode($fql_query_result, true);
-//     
+  
     // $userName = 
         // $fql_query_obj['data'][0]['first_name'] . " " .
         // $fql_query_obj['data'][0]['last_name'];
     
     echo "<div class='track-block'>";
     echo "<h4 class='track-names'>" 
-        . $i . ": " . $top15[$arrayIndex]['name'] . "</h4>";
+        . $index . ": " . $top15[$i]['name'] . "</h4>";
     // echo "<h4 class='names'>" . $userName . "</h4>";
     echo "</div>";
     
@@ -104,19 +117,19 @@ for($i = count($top15); $i > 0; $i--) {
     if($urlFlag) {
         $urlFlag = false;
         $url = "http://www.youtube.com/embed/";
-        $strIndex = strrpos($top15[$arrayIndex]['source'], "/") + 1;
+        $strIndex = strrpos($top15[$i]['source'], "/") + 1;
         
         $url = $url.substr(
-            $top15[$arrayIndex]['source'],
+            $top15[$i]['source'],
             $strIndex, 
             $videoIdLength
         );
             
         $url = $url . "?listType=playlist&playlist=";
     }else {
-        $strIndex = strrpos($top15[$arrayIndex]['source'], "/") + 1;
+        $strIndex = strrpos($top15[$i]['source'], "/") + 1;
         $url = $url . substr(
-                        $top15[$arrayIndex]['source'], 
+                        $top15[$i]['source'], 
                         $strIndex, 
                         $videoIdLength
                       ) . ",";
