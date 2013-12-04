@@ -1,4 +1,4 @@
-<?php 
+<?php
 include_once "includes/settings.php";
 
 $app_token_url = "https://graph.facebook.com/oauth/access_token?"
@@ -10,12 +10,12 @@ $app_token_url = "https://graph.facebook.com/oauth/access_token?"
     $params = null;
 parse_str($response, $params);
 
-// current time - 2 weeks 
+// current time - 2 weeks
 $last_week = time() - (7 * 24 * 60 * 60 * 2);
 
 /*
  * FQL!!!!!
- */ 
+ */
 $fql_query_url = 
     "https://graph.facebook.com/"
     . "fql?q=SELECT+attachment,+likes,+created_time,+actor_id+"
@@ -77,6 +77,10 @@ foreach($top15 as $song){
 $orderby = "likes";
 
 array_multisort($sortArray[$orderby],SORT_DESC,$top15); 
+
+echo "<pre>";
+print_r($top15);
+echo "</pre>";
 
 // echo the page 
 echo "<body>";
